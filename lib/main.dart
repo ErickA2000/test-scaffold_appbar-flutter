@@ -34,6 +34,8 @@ class HomePageState extends State<HomePage> {
     color: Colors.white,
   );
   bool isLiked = false;
+  int elementButtonIndex = 0;
+  String viewText = '0 : Home';
 
   @override
   Widget build(BuildContext context) {
@@ -48,20 +50,70 @@ class HomePageState extends State<HomePage> {
           )
         ],
       ),
-      floatingActionButton: FloatingActionButton(
+      drawer: const Drawer(
+        child: Column(
+          children: [
+            DrawerHeader(
+                child: Text(
+                  'Menu drawer',
+                  style: TextStyle(
+                    color: Colors.red,
+                    fontSize: 25,
+                    fontWeight: FontWeight.bold
+                  ),
+                )
+            ),
+            Text('Link 1'),
+            Text('Link 2'),
+            Text('Link 3')
+          ],
+        ),
+      ),
+
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(viewText,
+              style: const TextStyle(
+                fontSize: 30,
+                fontWeight: FontWeight.bold
+              ),
+            )
+          ],
+        ),
+      ),
+
+      floatingActionButton: FloatingActionButton.extended(
         onPressed: (){like();},
         backgroundColor: Colors.red,
-        // label: const Text('Like'),
-        child: heart
+        label: const Text('Like'),
+        icon: heart
       ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+      bottomNavigationBar: BottomNavigationBar(
+        items: const [
+          BottomNavigationBarItem(
+              label: 'Home',
+              icon: Icon(Icons.home)
+          ),
+          BottomNavigationBarItem(
+              label: 'User',
+              icon: Icon(Icons.supervised_user_circle)
+          ),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.assessment),
+              label: 'Statistics')
+        ],
+        currentIndex: elementButtonIndex,
+        onTap: pulseItem,
+      ),
+      /*floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       bottomNavigationBar: const BottomAppBar(
         color: Colors.blue,
         shape: CircularNotchedRectangle(),
         child: SizedBox(
           height: 5,
           child: Row(
-
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               IconButton(
@@ -75,7 +127,7 @@ class HomePageState extends State<HomePage> {
             ],
           ),
         ),
-      ),
+      ),*/
     );
   }
 
@@ -95,5 +147,23 @@ class HomePageState extends State<HomePage> {
         isLiked = true;
       }
     });
+  }
+
+  void pulseItem(int index){
+      setState(() {
+        elementButtonIndex = index;
+
+        switch(elementButtonIndex){
+          case 0:
+            viewText = '$elementButtonIndex : Home';
+            break;
+          case 1:
+            viewText = '$elementButtonIndex : Account';
+            break;
+          case 2:
+            viewText = '$elementButtonIndex : Statistics';
+            break;
+        }
+      });
   }
 }
