@@ -1,3 +1,6 @@
+import 'dart:io';
+
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -39,6 +42,10 @@ class HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    return Platform.isIOS ? cupertino() : material();
+  }
+
+  Widget material(){
     return Scaffold(
       appBar: AppBar(
         title: (Text(widget.title)),
@@ -57,9 +64,9 @@ class HomePageState extends State<HomePage> {
                 child: Text(
                   'Menu drawer',
                   style: TextStyle(
-                    color: Colors.red,
-                    fontSize: 25,
-                    fontWeight: FontWeight.bold
+                      color: Colors.red,
+                      fontSize: 25,
+                      fontWeight: FontWeight.bold
                   ),
                 )
             ),
@@ -76,8 +83,8 @@ class HomePageState extends State<HomePage> {
           children: [
             Text(viewText,
               style: const TextStyle(
-                fontSize: 30,
-                fontWeight: FontWeight.bold
+                  fontSize: 30,
+                  fontWeight: FontWeight.bold
               ),
             )
           ],
@@ -85,10 +92,10 @@ class HomePageState extends State<HomePage> {
       ),
 
       floatingActionButton: FloatingActionButton.extended(
-        onPressed: (){like();},
-        backgroundColor: Colors.red,
-        label: const Text('Like'),
-        icon: heart
+          onPressed: (){like();},
+          backgroundColor: Colors.red,
+          label: const Text('Like'),
+          icon: heart
       ),
       bottomNavigationBar: BottomNavigationBar(
         items: const [
@@ -129,6 +136,56 @@ class HomePageState extends State<HomePage> {
         ),
       ),*/
     );
+  }
+
+  Widget cupertino(){
+    return CupertinoTabScaffold(
+        tabBar: CupertinoTabBar(
+          items: const [
+            BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
+            BottomNavigationBarItem(
+                icon: Icon(Icons.supervised_user_circle_outlined),
+                label: 'User'),
+            BottomNavigationBarItem(icon: Icon(Icons.book), label: 'Book')
+          ],
+        ),
+        tabBuilder: (context, index) {
+          switch (index) {
+            case 0:
+              return CupertinoTabView(builder: (context) {
+                return CupertinoPageScaffold(
+                  child: Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [Text('$index : Home')],
+                    ),
+                  ),
+                );
+              });
+            case 1:
+              return CupertinoTabView(builder: (context) {
+                return CupertinoPageScaffold(
+                  child: Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [Text('$index : Account')],
+                    ),
+                  ),
+                );
+              });
+            default:
+              return CupertinoTabView(builder: (context) {
+                return CupertinoPageScaffold(
+                  child: Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [Text('$index : Book')],
+                    ),
+                  ),
+                );
+              });
+          }
+        });
   }
 
   void like() {
